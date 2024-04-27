@@ -1,4 +1,4 @@
-// utils/sweetAlert.js
+
 import Swal from "sweetalert2";
 
 const showSweetAlert = (title, icon) => {
@@ -11,9 +11,9 @@ const showSweetAlert = (title, icon) => {
       confirmButton: "bg-blue-500 hover:bg-blue-600",
       title: "text-yellow-500",
     },
-    allowOutsideClick: false, // Disable clicking outside the modal
-    timer: 1850, // Auto-hide after 5000 milliseconds (5 seconds)
-    showConfirmButton: false, // Hide the "OK" button
+    allowOutsideClick: false, 
+    timer: 2550,
+    showConfirmButton: false, 
   });
 };
 
@@ -28,7 +28,7 @@ const showLoadingSweetAlert = () => {
     showConfirmButton: false,
     didOpen: () => {
       Swal.showLoading();
-      // Simulate an asynchronous task (replace this with your actual task)
+      
     },
   });
 };

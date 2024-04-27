@@ -1,19 +1,43 @@
 // FloatingButton.js
 import React from "react";
+import { useRouter } from "next/router";
+import { setAsyncStorageData, getAsyncStorageData, removeAsyncStorageData } from '../utils/AsyncStorage';
 
-const TopBar = ({ data }) => {
+const TopBar = () => {
+
+  const router = useRouter();
+  const home = async () => {
+    removeAsyncStorageData('login-user');
+    router.push("/home");
+  };
+
+  const signOut = async () => {
+    removeAsyncStorageData('login-user');
+    router.push("/login");
+  };
+
   return (
-    <div
-    class="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-blue-900 px-6  justify-between lg:justify-end">
-  
-    <form action="" enctype="multipart/form-data" method="POST">
-        <button
-            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-              Sign In
-            </button>
-    </form>
-</div>
-   );
+    <nav className="bg-blue-900">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="hidden md:block">
+            <div className="flex-shrink-0">
+              <a href="#" className="text-white">FE - KEVIN ALNIZAR</a>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <a href="#" onClick={home} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">POST</a>
+            <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">TODOS</a>
+            <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">ALBUM</a>
+            <a href="#" onClick={signOut} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sign Out</a>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+  );
 };
 
 export default TopBar;

@@ -1,3 +1,4 @@
+// pages/index.js
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
@@ -11,118 +12,121 @@ import {
   showLoadingSweetAlert,
   closeLoadingSweetAlert,
 } from "./utils/SweetAlert";
-import { Session } from "./utils/Session";
-import Spinner from "./components/Spinner";
+
+interface Users {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+  website: string;
+}
+
 
 const Login = () => {
-  var now = new Date();
-  var year = now.getFullYear(); 
   const router = useRouter();
-
   const [isPage, setisPage] = useState(false);
+  const [Users, setUsers] = useState<Users[]>([]);
   useEffect(() => {
-    const checkSession = async () => {
-      const sessData = await Session();
-      if (sessData == 1) {
-        router.push("/home");
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-      setisPage(true);
     };
-    return () => {
-      checkSession();
-    };
+
+    fetchData();
   }, []);
 
-  const LOGIN = async () => {
-    const username = document.getElementById("username") as HTMLInputElement;
-    const password = document.getElementById("password") as HTMLInputElement;
-    if (username.value == "" || password.value == "") {
-      showSweetAlert("Please enter username and password", "error");
-      return false;
-    }
+  const LOGIN = async (id: string) => {
     showLoadingSweetAlert();
     try {
       const response = await fetch(
-        "https://raw.githubusercontent.com/kevinxcode/JSON-Example/main/fe_login.js",
+        "https://jsonplaceholder.typicode.com/users/1/",
       );
       const jsonData = await response.json();
-      if(jsonData.i_err==0){
-        if(username.value==jsonData.data[0].email && password.value==jsonData.data[0].password){
-          setAsyncStorageData("login-user", JSON.stringify(jsonData));
-          setTimeout(() => {
-            showSweetAlert("Sigin Success", "success");
-            router.push("/home");
-          }, 800);
-        }else{
-          showSweetAlert("Username or Password invalid", "error");
-        }
-      }else{
-        showSweetAlert("invalid response", "error");
-      }
+      setAsyncStorageData("login-user", JSON.stringify(jsonData));
+      showSweetAlert("Sigin Success", "success");
+      setTimeout(() => {
+        router.push("/home");
+      }, 800);
+      
     } catch (error) {
       showSweetAlert("network error", "error");
     }
   };
 
-  if (isPage) {
-    return (
-      <div className="flex flex-col min-h-[100vh]">
-        <div className="flex-grow flex items-center justify-center px-3 bg-white">
-          <div className="container  mx-auto px-2 py-8  max-w-md bg-white">
-            <div className="w-full bg-white">
-              <div className="text-center mb-4">
-                <h1 className="text-3xl font-semibold mb-0 ">
-                  GLINTS <span className="leading-tight text-xs">x</span> SATNUSA
-                  <span className="leading-tight text-xs"> F-E</span>
-                </h1>
-                <span className="leading-tight text-xs">FE - TEST</span>
-              </div>
-              <form className="bg-white shadow-md rounded px-4 pt-6 pb-8 mb-4">
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Username
-                  </label>
-                  <input
-                    id="username"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="text"
-                    placeholder="Username"
-                  />
-                </div>
+ 
+  return (
+    <div>
+     
+      <main className="flex flex-1 flex-col p-4 md:p-6">
+        <div className="flex items-center mb-8">
+          <h1 className="font-semibold text-lg md:text-2xl">User </h1>
+        </div>
+       
+        <div className="border shadow-sm rounded-lg">
+          <div className="relative w-full overflow-auto">
+          <table className="w-full caption-bottom text-sm">
+      <thead className="[&amp;_tr]:border-b">
+        <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <th
+            className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  max-w-[150px]">
+            #</th>
+          <th
+            className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+            Name</th>
+            <th
+            className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+            Username</th>
+            <th
+            className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+            Email</th>
+            <th
+            className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+            Phone</th>
+            <th
+            className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+            Website</th>
+          <th
+            className="h-12 px-4 text-left align-middle font-medium text-muted-foreground   max-w-[100px]">
+            Action
+          </th>
 
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Password
-                  </label>
-                  <input
-                    id="password"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="password"
-                    placeholder="Password"
-                  />
-                </div>
-                <div className="flex items-center mt-8 ">
-                  <button
-                    onClick={LOGIN}
-                    className="bg-gray-800 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                  >
-                    SIGN IN
-                  </button>
-                </div>
-                <div className="flex items-center mt-5 justify-center ">
-                  <span className="leading-tight text-xs">
-                    © {year}
-                  </span>
-                </div>
-              </form>
-            </div>
+        </tr>
+      </thead>
+      <tbody className="[&amp;_tr:last-child]:border-0">
+        {Users.map(dt => (
+          <tr key={dt.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+            <td className="p-4 align-middle ">{dt.id}</td>
+            <td className="p-4 align-middle ">{dt.name}</td>
+            <td className="p-4 align-middle ">{dt.username}</td>
+            <td className="p-4 align-middle ">{dt.email}</td>
+            <td className="p-4 align-middle ">{dt.phone}</td>
+            <td className="p-4 align-middle ">{dt.website}</td>
+            <td className="p-2 align-middle">
+              <button onClick={() => LOGIN(dt.id)} className="bg-blue-500 hover:bg-blue-700 text-white mx-2 font-bold py-1 px-2 rounded">
+                SIGN IN
+              </button>
+            </td>
+
+          </tr>
+        ))}
+
+
+      </tbody>
+    </table>
           </div>
         </div>
-      </div>
-    );
-  } else {
-    return <Spinner />;
-  }
+      </main>
+    </div>
+  );
 };
+
 export default Login;

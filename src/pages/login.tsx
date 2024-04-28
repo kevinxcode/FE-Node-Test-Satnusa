@@ -13,6 +13,8 @@ import {
   closeLoadingSweetAlert,
 } from "./utils/SweetAlert";
 
+import Spinner from "./components/Spinner";
+
 interface Users {
   id: number;
   name: string;
@@ -36,6 +38,7 @@ const Login = () => {
         }
         const data = await response.json();
         setUsers(data);
+        setisPage(true);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -62,71 +65,73 @@ const Login = () => {
     }
   };
 
+  if (isPage) {
+    return (
+      <div>
 
-  return (
-    <div>
-
-      <main className="flex flex-1 flex-col p-4 md:p-6">
-        <div className="flex items-center mb-8">
-          <h1 className="font-semibold text-lg md:text-2xl">User </h1>
-        </div>string
-
-        <div className="border shadow-sm rounded-lg">
-          <div className="relative w-full overflow-auto">
-            <table className="w-full caption-bottom text-sm">
-              <thead className="[&amp;_tr]:border-b">
-                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                  <th
-                    className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  max-w-[150px]">
-                    #</th>
-                  <th
-                    className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
-                    Name</th>
-                  <th
-                    className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
-                    Username</th>
-                  <th
-                    className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
-                    Email</th>
-                  <th
-                    className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
-                    Phone</th>
-                  <th
-                    className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
-                    Website</th>
-                  <th
-                    className="h-12 px-4 text-left align-middle font-medium text-muted-foreground   max-w-[100px]">
-                    Action
-                  </th>
-                  string
-                </tr>
-              </thead>
-              <tbody className="[&amp;_tr:last-child]:border-0">
-                {Users.map(dt => (
-                  <tr key={dt.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <td className="p-4 align-middle ">{dt.id}</td>
-                    <td className="p-4 align-middle ">{dt.name}</td>
-                    <td className="p-4 align-middle ">{dt.username}</td>
-                    <td className="p-4 align-middle ">{dt.email}</td>
-                    <td className="p-4 align-middle ">{dt.phone}</td>
-                    <td className="p-4 align-middle ">{dt.website}</td>
-                    <td className="p-2 align-middle">
-                      <button onClick={() => LOGIN(dt.id)} className="bg-blue-500 hover:bg-blue-700 text-white mx-2 font-bold py-1 px-2 rounded">
-                        SIGN IN
-                      </button>
-                    </td>
-
-                  </tr>
-                ))}
-
-
-              </tbody>
-            </table>
+        <main className="flex flex-1 flex-col p-4 md:p-6">
+          <div className="flex items-center mb-8">
+            <h1 className="font-semibold text-lg md:text-2xl">User </h1>
           </div>
-        </div>
-      </main>
-    </div>
-  );
+          <div className="border shadow-sm rounded-lg">
+            <div className="relative w-full overflow-auto">
+              <table className="w-full caption-bottom text-sm">
+                <thead className="[&amp;_tr]:border-b">
+                  <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                    <th
+                      className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  max-w-[150px]">
+                      #</th>
+                    <th
+                      className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+                      Name</th>
+                    <th
+                      className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+                      Username</th>
+                    <th
+                      className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+                      Email</th>
+                    <th
+                      className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+                      Phone</th>
+                    <th
+                      className="h-12 px-4 text-left align-middle font-medium text-muted-foreground  ">
+                      Website</th>
+                    <th
+                      className="h-12 px-4 text-left align-middle font-medium text-muted-foreground   max-w-[100px]">
+                      Action
+                    </th>
+                    
+                  </tr>
+                </thead>
+                <tbody className="[&amp;_tr:last-child]:border-0">
+                  {Users.map(dt => (
+                    <tr key={dt.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                      <td className="p-4 align-middle ">{dt.id}</td>
+                      <td className="p-4 align-middle ">{dt.name}</td>
+                      <td className="p-4 align-middle ">{dt.username}</td>
+                      <td className="p-4 align-middle ">{dt.email}</td>
+                      <td className="p-4 align-middle ">{dt.phone}</td>
+                      <td className="p-4 align-middle ">{dt.website}</td>
+                      <td className="p-2 align-middle">
+                        <button onClick={() => LOGIN(dt.id)} className="bg-blue-500 hover:bg-blue-700 text-white mx-2 font-bold py-1 px-2 rounded">
+                          SIGN IN
+                        </button>
+                      </td>
+
+                    </tr>
+                  ))}
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  } else {
+    return <Spinner />
+  }
 };
 
 export default Login;

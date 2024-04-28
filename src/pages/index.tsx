@@ -2,7 +2,6 @@
 import react, { useEffect, useState } from 'react';
 import { useRouter } from "next/router";
 import Login from "./login";
-import FloatingButton from "./components/FloatingButton";
 import Spinner from "./components/Spinner";
 import { setAsyncStorageData, getAsyncStorageData, removeAsyncStorageData } from './utils/AsyncStorage'
 

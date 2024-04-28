@@ -15,6 +15,7 @@ const Home = () => {
   useEffect(() => {
     const checkSession = async () => {
       const sessData = await Session();
+      console.log(sessData);
       if (sessData == 0) {
         router.push("/login");
       } else {

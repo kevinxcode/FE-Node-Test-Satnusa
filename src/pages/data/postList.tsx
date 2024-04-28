@@ -8,6 +8,7 @@ import {
 import ModalEdit from "./ModalEdit"
 import EditPost from "./EditPost"
 
+
 interface Post {
   userId: number;
   id: number;
@@ -22,13 +23,17 @@ interface Item {
 
 
 
-const PostList = () => {
+interface GetProps {
+  datasID: string; 
+}
+
+const PostList: React.FC<GetProps> = ({ datasID }) => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${datasID}/posts`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }

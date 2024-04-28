@@ -6,16 +6,20 @@ import { Session } from "./utils/Session";
 import Spinner from "./components/Spinner";
 import PostList from "./data/postList"
 import AddPost from "./data/AddPost"
+import { setAsyncStorageData, getAsyncStorageData, removeAsyncStorageData } from './utils/AsyncStorage';
 
 import Modal from "./data/Modal";
+import { json } from "stream/consumers";
+
 
 const Home = () => {
   const router = useRouter();
   const [isPage, setisPage] = useState(false);
+  const [UserID, setUserID] = useState('');
   useEffect(() => {
+    getUsers();
     const checkSession = async () => {
       const sessData = await Session();
-      console.log(sessData);
       if (sessData == 0) {
         router.push("/login");
       } else {
@@ -28,12 +32,19 @@ const Home = () => {
       }, 400);
 
     };
-
   }, []);
+  
+ const getUsers = async () => {
+    const retrievedData = await getAsyncStorageData('login-user'); // Replace 'your-storage-key' with your actual key
+    if (retrievedData !== null) {
+      const obj = JSON.parse(retrievedData);
+      setUserID(obj.id);
+    }
+  };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const [isOpenAdd, setIsOpenAdd] = useState(false);
+  const openModal_add = () => setIsOpenAdd(true);
+  const closeModal_add = () => setIsOpenAdd(false);
 
   if (isPage) {
     return (
@@ -44,17 +55,17 @@ const Home = () => {
             <h1 className="font-semibold text-lg md:text-2xl">Post List</h1>
           </div>
           <div className="w-full mb-4">
-            <button onClick={openModal} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+            <button onClick={openModal_add} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
               ADD POST
             </button>
             
-            <Modal isOpen={isOpen} onClose={closeModal} title="Add Post">
+            <Modal isOpen={isOpenAdd} onClose={closeModal_add} title="Add Post">
               <AddPost />
             </Modal>
           </div>
           <div className="border shadow-sm rounded-lg">
             <div className="relative w-full overflow-auto">
-              <PostList />
+              <PostList datasID={UserID} />
             </div>
           </div>
         </main>

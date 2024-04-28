@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:firefox": "npm run dev && firefox http://localhost:3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "next": "14.2.3",
+    "open": "^10.1.0",
     "react": "^18",
     "react-dom": "^18",
     "react-modal": "^3.16.1",

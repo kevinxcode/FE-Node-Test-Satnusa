@@ -9,6 +9,7 @@ interface View1Props {
     dataId: { id: string, title: string, body: string }; // Update dataId type
 }
 
+
 const AddPost: React.FC<View1Props> = ({ dataId }) => {
     const [formData, setFormData] = useState({
         id: '',

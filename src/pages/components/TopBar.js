@@ -3,17 +3,18 @@ import { useRouter } from "next/router";
 import { setAsyncStorageData, getAsyncStorageData, removeAsyncStorageData } from '../utils/AsyncStorage';
 
 const TopBar = () => {
-
+  const[userSession, setUserSession] = useState([]);
   useEffect(() => {
     const getProfile = async () => {
       const retrievedData = await getAsyncStorageData("login-user");
-      console.log(retrievedData);
+      if(retrievedData!=null){
+        setUserSession(JSON.parse(retrievedData))
+      }
     };
     getProfile();
   }, []);
 
   
-
   const router = useRouter();
   const home = async () => {
     router.push("/home");
@@ -34,7 +35,7 @@ const TopBar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="hidden md:block">
             <div className="flex-shrink-0">
-              <a href="#" className="text-white">FE - KEVIN ALNIZAR</a>
+              <a href="#" className="text-white">FE - KEVIN ALNIZAR : {userSession.email}</a>
             </div>
           </div>
 
@@ -42,7 +43,7 @@ const TopBar = () => {
             <a href="#" onClick={home} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">POST</a>
             {/* <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">TODOS</a> */}
             <a href="#" onClick={album} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">ALBUM</a>
-            <a href="#" onClick={signOut} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sign Out</a>
+            <a href="#" onClick={signOut} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">SIGN OUT</a>
           </div>
 
         </div>

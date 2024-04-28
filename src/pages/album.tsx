@@ -4,13 +4,16 @@ import { useRouter } from "next/router";
 import TopBar from "./components/TopBar";
 import { Session } from "./utils/Session";
 import Spinner from "./components/Spinner";
-import AlbumList from "./data/AlbumList"
+import AlbumList from "./data/AlbumList";
+import { setAsyncStorageData, getAsyncStorageData, removeAsyncStorageData } from './utils/AsyncStorage';
 
 
 const Album = () => {
   const router = useRouter();
   const [isPage, setisPage] = useState(false);
+  const [UserID, setUserID] = useState('');
   useEffect(() => {
+    getUsers();
     const checkSession = async () => {
       const sessData = await Session();
       if (sessData == 0) {
@@ -28,6 +31,14 @@ const Album = () => {
 
   }, []);
 
+  const getUsers = async () => {
+    const retrievedData = await getAsyncStorageData('login-user'); // Replace 'your-storage-key' with your actual key
+    if (retrievedData !== null) {
+      const obj = JSON.parse(retrievedData);
+      setUserID(obj.id);
+    }
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -43,7 +54,7 @@ const Album = () => {
          
           <div className="border shadow-sm rounded-lg">
             <div className="relative w-full overflow-auto">
-              <AlbumList />
+              <AlbumList datasID={UserID} />
             </div>
           </div>
         </main>

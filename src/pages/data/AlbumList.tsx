@@ -11,19 +11,22 @@ import EditPost from "./EditPost"
 
 interface Post {
   albumId: number;
-  id: number;
+  id: string;
   title: string;
 }
 
+interface GetProps {
+  datasID: string; 
+}
 
-const AlbumList = () => {
+const AlbumList: React.FC<GetProps> = ({ datasID }) => {
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users/1/albums');
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${datasID}/albums`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }

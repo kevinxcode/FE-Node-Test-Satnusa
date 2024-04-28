@@ -44,11 +44,11 @@ const Login = () => {
     fetchData();
   }, []);
 
-  const LOGIN = async (id: string) => {
+  const LOGIN = async (id: number) => {
     showLoadingSweetAlert();
     try {
       const response = await fetch(
-        "https://jsonplaceholder.typicode.com/users/1/",
+        `https://jsonplaceholder.typicode.com/users/${id}`,
       );
       const jsonData = await response.json();
       setAsyncStorageData("login-user", JSON.stringify(jsonData));
@@ -69,7 +69,7 @@ const Login = () => {
       <main className="flex flex-1 flex-col p-4 md:p-6">
         <div className="flex items-center mb-8">
           <h1 className="font-semibold text-lg md:text-2xl">User </h1>
-        </div>
+        </div>string
        
         <div className="border shadow-sm rounded-lg">
           <div className="relative w-full overflow-auto">
@@ -98,7 +98,7 @@ const Login = () => {
             className="h-12 px-4 text-left align-middle font-medium text-muted-foreground   max-w-[100px]">
             Action
           </th>
-
+          string
         </tr>
       </thead>
       <tbody className="[&amp;_tr:last-child]:border-0">

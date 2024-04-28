@@ -1,9 +1,18 @@
-// FloatingButton.js
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 import { setAsyncStorageData, getAsyncStorageData, removeAsyncStorageData } from '../utils/AsyncStorage';
 
 const TopBar = () => {
+
+  useEffect(() => {
+    const getProfile = async () => {
+      const retrievedData = await getAsyncStorageData("login-user");
+      console.log(retrievedData);
+    };
+    getProfile();
+  }, []);
+
+  
 
   const router = useRouter();
   const home = async () => {

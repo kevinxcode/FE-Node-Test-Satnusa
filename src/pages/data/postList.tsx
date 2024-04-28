@@ -21,6 +21,7 @@ interface Item {
 
 
 
+
 const PostList = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -41,7 +42,7 @@ const PostList = () => {
     fetchData();
   }, []);
 
-  const deletePost = (value: string) => {
+  const deletePost = (value: number) => {
     fetch(`https://jsonplaceholder.typicode.com/posts/${value}`, {
       method: 'DELETE',
     })

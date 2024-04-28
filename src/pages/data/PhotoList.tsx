@@ -9,25 +9,24 @@ import ModalEdit from "./ModalEdit"
 import EditPost from "./EditPost"
 
 interface Post {
-  userId: number;
+  albumId: number;
   id: number;
   title: string;
-  body: string;
+  url: string;
+  thumbnailUrl: string;
 }
 
-interface Item {
-  id: number;
+interface GetProps {
+  getId: string; // Update dataId type
 }
 
-
-
-const PostList = () => {
+const PhotoList: React.FC<GetProps> = ({ getId }) => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const response = await fetch(`https://jsonplaceholder.typicode.com/albums/${getId}/photos`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -54,31 +53,6 @@ const PostList = () => {
       })
   }
 
-  const [isOpen, setIsOpen] = useState(false);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
-
-
-  const [editItemId, setEditItemId] = useState<string[]>([]);
-  const items: Item[] = []; // Your list of items
-
-  const handleEdit = async (id: number) => {
-    try {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-      const data = await response.json();
-      setEditItemId(data);
-      setIsOpen(true);
-      
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-
-  };
-
-
 
 
   return (
@@ -93,7 +67,8 @@ const PostList = () => {
             Title</th>
           <th
             className="h-12 px-4 text-left align-middle font-medium text-muted-foreground   max-w-[100px]">
-            Action</th>
+            Image
+          </th>
 
         </tr>
       </thead>
@@ -104,22 +79,12 @@ const PostList = () => {
             <td className="p-4 align-middle ">{post.title}
             </td>
             <td className="p-2 align-middle">
-
-              <button onClick={() => handleEdit(post.id)} className="bg-blue-500 hover:bg-blue-700 text-white mx-2 font-bold py-1 px-2 rounded">
-                EDIT
-              </button>
-              <button key={post.id} onClick={() => deletePost(post.id)} className="bg-red-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
-                DELETE
-              </button>
-
+            <img src={post.thumbnailUrl} alt={`Thumbnail ${post.id}`} />
             </td>
 
           </tr>
         ))}
 
-        <ModalEdit isOpen={isOpen} onClose={closeModal} title="Edit Post" >
-          <EditPost dataId={editItemId} />
-        </ModalEdit>
 
       </tbody>
     </table>
@@ -128,4 +93,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default PhotoList;

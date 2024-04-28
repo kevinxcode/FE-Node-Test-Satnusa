@@ -1,16 +1,28 @@
-// pages/index.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     showSweetAlert,
     showLoadingSweetAlert,
     closeLoadingSweetAlert,
 } from "../utils/SweetAlert";
 
-const AddPost: React.FC = () => {
+interface View1Props {
+    dataId: { id: string, title: string, body: string }; // Update dataId type
+}
+
+const AddPost: React.FC<View1Props> = ({ dataId }) => {
     const [formData, setFormData] = useState({
+        id: '',
         title: '',
         body: ''
     });
+
+    useEffect(() => {
+        setFormData({
+            id: dataId.id,
+            title: dataId.title,
+            body: dataId.body
+        });
+    }, [dataId]); // Trigger effect when dataId changes
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -22,10 +34,12 @@ const AddPost: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
-        fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: 'POST',
+        // console.log(formData);
+        // Submit logic...
+        fetch(`https://jsonplaceholder.typicode.com/posts/${formData.id}`, {
+            method: 'PUT',
             body: JSON.stringify({
+                id: formData.id,
                 title: formData.title,
                 body: formData.body,
                 userId: 1,
@@ -43,7 +57,20 @@ const AddPost: React.FC = () => {
         <div>
             <form onSubmit={handleSubmit} className="max-w-md mx-auto">
                 <div className="mb-4">
-                    <label htmlFor="title" className="block text-gray-700 font-bold">Title</label>
+                    <label htmlFor="id" className="block text-gray-700 font-bold">ID </label>
+                    <input
+                        type="text"
+                        id="id"
+                        name="id"
+                        value={formData.id}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-md p-2"
+                        required
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="title" className="block text-gray-700 font-bold">Title </label>
                     <input
                         type="text"
                         id="title"

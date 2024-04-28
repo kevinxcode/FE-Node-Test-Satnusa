@@ -7,8 +7,11 @@ const TopBar = () => {
 
   const router = useRouter();
   const home = async () => {
-    removeAsyncStorageData('login-user');
     router.push("/home");
+  };
+
+  const album = async () => {
+    router.push("/album");
   };
 
   const signOut = async () => {
@@ -28,8 +31,8 @@ const TopBar = () => {
 
           <div className="flex items-center space-x-4">
             <a href="#" onClick={home} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">POST</a>
-            <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">TODOS</a>
-            <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">ALBUM</a>
+            {/* <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">TODOS</a> */}
+            <a href="#" onClick={album} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">ALBUM</a>
             <a href="#" onClick={signOut} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sign Out</a>
           </div>
 

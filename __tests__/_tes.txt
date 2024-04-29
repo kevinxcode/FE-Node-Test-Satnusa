@@ -1,0 +1,10 @@
+// __tests__/index.test.js
+
+import { render, screen } from '@testing-library/react';
+import Index from '../src/pages/login'; // Path to your component
+
+test('renders welcome message', () => {
+  render(<Index />);
+  const linkElement = screen.getByText(/Welcome to Next.js/i);
+  expect(linkElement).toBeInTheDocument();
+});
